@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('quote_statuses', function (Blueprint $table) {
             $table->id();
+            $table->string('display_name');
+            $table->string('code')->unique();
+            $table->string('icon');
+            $table->string('bg_color');
+            $table->string('bg_text');
             $table->timestamps();
         });
     }

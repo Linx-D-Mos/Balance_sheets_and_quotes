@@ -2,9 +2,15 @@ erDiagram
 
     clients {
         bigint id PK
-        string name
+        string first_name
+        string last_name
         string email UK "nullable"
-        string phone "nullable"
+        string phone_number "nullable"
+        string address "nullable"
+        string city "nullable"
+        string state "nullable"
+        string zip_code "nullable"
+        string apt "nullable"
         timestamp created_at
         timestamp updated_at
     }
@@ -12,7 +18,10 @@ erDiagram
     project_statuses {
         bigint id PK
         string display_name "Borrador, En Ejecución, Finalizado, Cancelado"
-        string code UK
+        string code UK "unique (draft, in_progress, completed, cancelled)"
+        string icon
+        string bg_color
+        string bg_text
         timestamp created_at
         timestamp updated_at
     }
@@ -21,7 +30,12 @@ erDiagram
         bigint id PK
         bigint client_id FK "clients"
         bigint project_status_id FK "project_statuses"
+        string code "unique"
         string title "Ej: Pintura Residencia Alfa"
+        string address "nullable"
+        date actual_start_date "nullable"
+        date actual_end_date "nullable"
+        text description 
         timestamp created_at
         timestamp updated_at
     }
@@ -30,7 +44,10 @@ erDiagram
     quote_statuses {
         bigint id PK
         string display_name "Borrador, Aprobada, Cerrada por Enmienda, Cancelada"
-        string code UK
+        string code UK "unique (draft, approved, closed_by_amendment, cancelled)"
+        string icon
+        string bg_color
+        string bg_text
         timestamp created_at
         timestamp updated_at
     }     
