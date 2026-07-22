@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('quote_material_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('quote_id')->constrained('quotes')->cascadeOnDelete();
+            $table->string('concept');
+            $table->decimal('estimated_quantity', 12, 4)->default(0);
+            $table->decimal('estimated_unit_price', 12, 4)->default(0);
+            $table->decimal('subtotal', 12, 4)->default(0);
             $table->timestamps();
         });
     }

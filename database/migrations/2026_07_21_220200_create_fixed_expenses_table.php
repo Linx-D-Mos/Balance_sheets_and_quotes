@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('fixed_expenses', function (Blueprint $table) {
             $table->id();
+            $table->string('concept');
+            $table->decimal('amount', 12, 4);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

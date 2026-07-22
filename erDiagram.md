@@ -55,7 +55,7 @@ erDiagram
     quotes {
         bigint id PK
         bigint project_id FK "projects"
-        bigint status_id FK "quote_statuses"
+        bigint quote_status_id FK "quote_statuses"
         bigint parent_quote_id FK "quotes.id (nullable para Enmiendas)"
         string title 
         date start_date "Fecha estimada de inicio"

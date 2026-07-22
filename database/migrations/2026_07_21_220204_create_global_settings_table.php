@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('global_settings', function (Blueprint $table) {
             $table->id();
+            $table->decimal('standard_monthly_hours', 12, 4);
+            $table->decimal('default_overhead_rate_applied', 12, 4);
+            $table->decimal('default_profit_margin', 12, 4);
+            $table->decimal('overtime_multiplier', 12, 4)->default(1.5000);
             $table->timestamps();
         });
     }

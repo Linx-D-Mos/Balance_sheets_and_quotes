@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('labor_roles', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->decimal('base_salary', 12, 4);
+            $table->decimal('social_load_pct', 12, 4);
+            $table->decimal('hourly_cost', 12, 4);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

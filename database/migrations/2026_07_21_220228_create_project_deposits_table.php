@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('project_deposits', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('project_id')->constrained('projects')->restrictOnDelete();
+            $table->foreignId('annulled_by_user_id')->nullable()->constrained('users')->restrictOnDelete();
+            $table->decimal('amount', 12, 4);
+            $table->string('payment_method');
+            $table->date('received_at');
+            $table->string('reference_number')->nullable();
+            $table->boolean('is_annulled')->default(false);
+            $table->timestamp('annulled_at')->nullable();
+            $table->string('annulment_reason')->nullable();
             $table->timestamps();
+
+            $table->index(['project_id', 'received_at']);
         });
     }
 
