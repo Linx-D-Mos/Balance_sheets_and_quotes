@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class QuoteStatusFactory extends Factory
 {
+
+    protected $model = QuoteStatus::class;
+
     /**
      * Define the model's default state.
      *
@@ -20,7 +23,7 @@ class QuoteStatusFactory extends Factory
     {
         return [
             'display_name' => $this->faker->unique()->words(2, true),
-            'code' => $this->faker->unique()->randomElement(QuoteStatusEnum::cases()),,
+            'code' => $this->faker->unique()->randomElement(QuoteStatusEnum::cases()),
             'icon' => 'mdi-circle-outline',
             'bg_color' => $this->faker->hexColor(),
             'bg_text' => '#ffffff',

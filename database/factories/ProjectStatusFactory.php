@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ProjectStatusFactory extends Factory
 {
+    protected $model = ProjectStatus::class;
     /**
      * Define the model's default state.
      *
