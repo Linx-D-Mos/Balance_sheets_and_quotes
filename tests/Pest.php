@@ -1,5 +1,10 @@
 <?php
 
+use Database\Seeders\GlobalSettingsSeeder;
+use Database\Seeders\MaterialCategoriesSeeder;
+use Database\Seeders\ProjectStatusesSeeder;
+use Database\Seeders\QuoteStatusesSeeder;
+use Database\Seeders\RolesAndPermissionsSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,8 +20,15 @@ use Tests\TestCase;
 */
 
 pest()->extend(TestCase::class)
- // ->use(RefreshDatabase::class)
-    ->in('Feature');
+    ->use(RefreshDatabase::class)
+    ->beforeEach(function () {
+        $this->seed(RolesAndPermissionsSeeder::class);
+        $this->seed(ProjectStatusesSeeder::class);
+        $this->seed(QuoteStatusesSeeder::class);
+        $this->seed(MaterialCategoriesSeeder::class);
+        $this->seed(GlobalSettingsSeeder::class);
+    })
+    ->in('Feature', 'Unit');
 
 /*
 |--------------------------------------------------------------------------
