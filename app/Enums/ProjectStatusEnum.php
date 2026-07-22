@@ -7,7 +7,7 @@ enum ProjectStatusEnum: string
     case DRAFT = 'draft';
     case IN_PROGRESS = 'in_progress';
     case COMPLETED = 'completed';
-    case CANCELED = 'canceled';
+    case CANCELLED = 'cancelled';
 
     /**
      * Get the plain text with each string in each case.

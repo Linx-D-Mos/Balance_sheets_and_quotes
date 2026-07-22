@@ -4,6 +4,7 @@ erDiagram
         bigint id PK
         string first_name
         string last_name
+        string company_name
         string email UK "nullable"
         string phone_number "nullable"
         string address "nullable"
@@ -35,7 +36,7 @@ erDiagram
         string address "nullable"
         date actual_start_date "nullable"
         date actual_end_date "nullable"
-        text description 
+        text project_description 
         timestamp created_at
         timestamp updated_at
     }
