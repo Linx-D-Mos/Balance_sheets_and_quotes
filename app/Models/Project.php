@@ -22,7 +22,7 @@ class Project extends Model
         'address',
         'actual_start_date',
         'actual_end_date',
-        'description'
+        'project_description'
     ];
 
     protected $casts = [
