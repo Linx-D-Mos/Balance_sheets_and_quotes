@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\AppPermissionEnum;
+use App\Enums\RoleEnum;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -23,7 +24,7 @@ class RolesAndPermissionsSeeder extends Seeder
             Permission::findOrCreate($permission->value, 'web');
         }
 
-        $adminRole = Role::findOrCreate('administrator', 'web');
+        $adminRole = Role::firstOrCreate(['name' => RoleEnum::ADMINISTRATOR->value]);
         $adminRole->syncPermissions(Permission::all());
     }
 }
