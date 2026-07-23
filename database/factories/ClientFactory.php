@@ -21,10 +21,15 @@ class ClientFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->lastName(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'phone_number' => $this->faker->phoneNumber(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'company_name' => fake()->company(),
+            'email' => fake()->unique()->safeEmail(),
+            'phone_number' => fake()->phoneNumber(),
+            'address' => fake()->streetAddress(),
+            'city' => fake()->city(),
+            'state' => fake()->state(),
+            'zip_code' => fake()->postcode(),
         ];
     }
 }

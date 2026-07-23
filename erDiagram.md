@@ -11,7 +11,6 @@ erDiagram
         string city "nullable"
         string state "nullable"
         string zip_code "nullable"
-        string apt "nullable"
         timestamp created_at
         timestamp updated_at
     }
