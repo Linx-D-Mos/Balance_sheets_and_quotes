@@ -67,6 +67,7 @@ class ClientResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->searchPlaceholder('Buscar por nombre, correo o teléfono...')
             ->columns([
                 CommonColumns::displayName(),
                 CommonColumns::email(),

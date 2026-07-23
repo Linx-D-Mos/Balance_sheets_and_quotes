@@ -11,7 +11,7 @@ class CommonActions
     /**
      * Botón superior primario de creación (ej: "+ Nuevo Cliente", "+ Registrar Trabajador").
      */
-    public static function createHeaderAction(string $label, string $icon = 'heroicon-m-user-plus'): CreateAction
+    public static function createHeaderAction(string $label, string $icon = 'heroicon-o-user-plus'): CreateAction
     {
         return CreateAction::make()
             ->label($label)
