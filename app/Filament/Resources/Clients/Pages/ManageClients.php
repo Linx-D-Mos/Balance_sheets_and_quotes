@@ -12,12 +12,12 @@ class ManageClients extends ManageRecords
 
     public function getTitle(): string
     {
-        return 'Directorio Maestro de Clientes';
+        return 'Directorio de Clientes';
     }
 
     public function getSubheading(): ?string
     {
-        return 'Gestión de cuentas comerciales y vinculación directa de contenedores de obra.';
+        return 'Gestiona tus clientes y su información de contacto.';
     }
 
     protected function getHeaderActions(): array

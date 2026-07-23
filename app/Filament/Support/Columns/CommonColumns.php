@@ -12,14 +12,23 @@ class CommonColumns
     /**
      * Columna de cliente / razón social principal con formato en negrita y búsqueda.
      */
-    public static function displayName(string $name = 'company_name', string $label = 'CLIENTE / RAZÓN SOCIAL'): TextColumn
-    {
-        return TextColumn::make($name)
+    public static function displayName(
+        string $name = 'company_name',
+        string $label = 'CLIENTE / RAZÓN SOCIAL',
+        ?array $searchableColumns = null
+    ): TextColumn {
+        $column = TextColumn::make($name)
             ->label($label)
-            ->formatStateUsing(fn ($state, $record) => $state ?: trim("{$record->first_name} {$record->last_name}"))
-            ->searchable(['first_name', 'last_name', 'company_name', 'email'])
-            ->sortable(['company_name', 'first_name'])
-            ->weight(FontWeight::Bold);
+            ->sortable()
+            ->weight('bold');
+
+        if ($name === 'company_name') {
+            $column->formatStateUsing(fn($state, $record): string => $state ?: trim("{$record->first_name} {$record->last_name}"));
+        }
+
+        $columnsToSearch = $searchableColumns ?? ($name === 'company_name' ? ['company_name', 'first_name', 'last_name', 'email'] : [$name]);
+
+        return $column->searchable($columnsToSearch);
     }
 
     /**
@@ -57,8 +66,8 @@ class CommonColumns
             ->counts($relation)
             ->label($label)
             ->badge()
-            ->formatStateUsing(fn ($state) => "{$state} " . ($state == 1 ? $singularLabel : $pluralLabel))
-            ->color(fn ($state) => $state > 0 ? 'primary' : 'warning');
+            ->formatStateUsing(fn($state) => "{$state} " . ($state == 1 ? $singularLabel : $pluralLabel))
+            ->color(fn($state) => $state > 0 ? 'primary' : 'warning');
     }
 
     /**
