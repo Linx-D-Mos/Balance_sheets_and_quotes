@@ -27,4 +27,18 @@ class Client extends Model
     {
         return $this->hasMany(Project::class);
     }
+
+    //Accesor
+
+    /**
+     * Obtiene el nombre de visualización unificado (Persona Natural o Empresa).
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        if (!empty($this->company_name)) {
+            return $this->company_name;
+        }
+
+        return trim("{$this->first_name} {$this->last_name}");
+    }
 }
