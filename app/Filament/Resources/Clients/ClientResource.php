@@ -3,13 +3,13 @@
 namespace App\Filament\Resources\Clients;
 
 use App\Filament\Resources\Clients\Pages\ManageClients;
+use App\Filament\Support\Actions\CommonActions;
+use App\Filament\Support\Columns\CommonColumns;
 use App\Models\Client;
 use BackedEnum;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Actions\Action;
 use Filament\Tables\Table;
 use Filament\Schemas\Schema;
 use UnitEnum;
@@ -48,7 +48,6 @@ class ClientResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone_number')
                     ->label('Teléfono')
-                    ->maxLength(255)
                     ->maxLength(255),
                 Forms\Components\TextInput::make('address')
                     ->label('Dirección')
@@ -69,26 +68,17 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('company_name')
-                    ->label('CLIENTE / RAZÓN SOCIAL')
-                    ->formatStateUsing(fn($state, Client $record): string => $state ?: trim("{$record->first_name} {$record->last_name}"))
-                    ->searchable(['first_name', 'last_name', 'company_name', 'email'])
-                    ->sortable(['company_name', 'first_name'])
-                    ->weight('bold'),
-                Tables\Columns\TextColumn::make('email')
-                    ->label('CORREO ELECTRÓNICO')
-                    ->searchable()
-                    ->copyable()
-                    ->placeholder('Sin correo'),
-                Tables\Columns\TextColumn::make('phone_number')
-                    ->label('TELÉFONO')
-                    ->placeholder('Sin teléfono'),
+                CommonColumns::displayName(),
+                CommonColumns::email(),
+                CommonColumns::phone(),
+                CommonColumns::countBadge('projects', 'Proyecto', 'Proyectos'),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                \Filament\Actions\EditAction::make(),
+                CommonActions::editRowAction(),
+                CommonActions::secondaryRowAction('create_project', 'Crear Proyecto'),
             ])
             ->bulkActions([
                 \Filament\Actions\BulkActionGroup::make([
