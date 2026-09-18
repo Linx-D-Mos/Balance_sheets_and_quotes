@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\LaborRoles;
 
 use App\Filament\Resources\LaborRoles\Pages\ManageLaborRoles;
+use App\Filament\Support\Columns\CommonColumns;
 use App\Models\LaborRole;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -12,9 +13,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Form;
 use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -38,11 +37,11 @@ class LaborRoleResource extends Resource
     {
         return $schema
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Nombre del Rol')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('base_salary')
+                TextInput::make('base_salary')
                     ->label('Salario Base (/HR)')
                     ->numeric()
                     ->prefix('$')
@@ -52,7 +51,7 @@ class LaborRoleResource extends Resource
                         $cost = LaborRole::calculateHourlyCost($get('base_salary'), $get('social_load_pct'));
                         $set('hourly_cost', number_format($cost, 2));
                     }),
-                Forms\Components\TextInput::make('social_load_pct')
+                TextInput::make('social_load_pct')
                     ->label('Carga Social (%)')
                     ->numeric()
                     ->suffix('%')
@@ -62,14 +61,14 @@ class LaborRoleResource extends Resource
                         $cost = LaborRole::calculateHourlyCost($get('base_salary'), $get('social_load_pct'));
                         $set('hourly_cost', number_format($cost, 2));
                     }),
-                Forms\Components\TextInput::make('hourly_cost')
+                TextInput::make('hourly_cost')
                     ->label('Costo Cargado Calculado (C_ch)')
                     ->prefix('$')
                     ->disabled()
                     ->dehydrated(false)
                     ->helperText('Valor calculado automáticamente por el sistema.'),
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Disponible para Operaciones')
+                Toggle::make('is_active')
+                    ->label('Disponible')
                     ->default(true),
             ]);
     }
@@ -90,8 +89,7 @@ class LaborRoleResource extends Resource
                 TextColumn::make('hourly_cost')
                     ->money()
                     ->sortable(),
-                IconColumn::make('is_active')
-                    ->boolean(),
+                CommonColumns::availability('is_active', 'DISPONIBILIDAD'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

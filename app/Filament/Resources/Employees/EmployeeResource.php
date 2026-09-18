@@ -16,6 +16,8 @@ use Filament\Schemas\Schema;;
 
 use Filament\Tables\Table;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use UnitEnum;
 
@@ -37,12 +39,12 @@ class EmployeeResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Nombre Completo')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_active')
-                    ->label('Disponible para Operaciones')
+                Toggle::make('is_active')
+                    ->label('Disponible')
                     ->default(true),
             ]);
     }
@@ -54,7 +56,8 @@ class EmployeeResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 CommonColumns::displayName('name', 'OPERARIO / NOMBRE COMPLETO'),
-                CommonColumns::availability('is_active', 'DISPONIBILIDAD OPERATIVA'),
+                CommonColumns::availability('is_active', 'DISPONIBILIDAD'),
+
             ])
             ->filters([
                 //
