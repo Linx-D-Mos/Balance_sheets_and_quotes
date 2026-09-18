@@ -62,7 +62,7 @@ class LaborRoleResource extends Resource
                         $set('hourly_cost', number_format($cost, 2));
                     }),
                 TextInput::make('hourly_cost')
-                    ->label('Costo Cargado Calculado (C_ch)')
+                    ->label('Costo por hora')
                     ->prefix('$')
                     ->disabled()
                     ->dehydrated(false)
