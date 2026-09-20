@@ -6,12 +6,13 @@ use App\Models\LaborRole;
 use App\Models\User;
 use Livewire\Livewire;
 
-beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->user->givePermissionTo(AppPermissionEnum::MANAGE_SETTINGS->value);
-});
-
 describe('LaborRole Domain and Resource Management', function () {
+
+    beforeEach(function () {
+        $this->user = User::factory()->create();
+        $this->user->givePermissionTo(AppPermissionEnum::MANAGE_SETTINGS->value);
+    });
+
     it('calculates C_ch correctly using domain formula', function () {
         $calculated = LaborRole::calculateHourlyCost(20.00, 15.00);
 

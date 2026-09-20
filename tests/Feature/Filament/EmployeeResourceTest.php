@@ -6,12 +6,13 @@ use App\Models\Employee;
 use App\Models\User;
 use Livewire\Livewire;
 
-beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->user->givePermissionTo(AppPermissionEnum::MANAGE_SETTINGS->value);
-});
-
 describe('EmployeeResource Filament Management', function () {
+
+    beforeEach(function () {
+        $this->user = User::factory()->create();
+        $this->user->givePermissionTo(AppPermissionEnum::MANAGE_SETTINGS->value);
+    });
+
     it('can render employee resource index page', function () {
         $this->actingAs($this->user);
 
@@ -50,7 +51,7 @@ describe('EmployeeResource Filament Management', function () {
         ]);
     });
 
-it('can edit employee status via edit action (CA-05.2)', function () {
+    it('can edit employee status via edit action (CA-05.2)', function () {
         $this->actingAs($this->user);
 
         $employee = Employee::factory()->create([

@@ -7,12 +7,12 @@ use App\Models\Project;
 use App\Models\User;
 use Livewire\Livewire;
 
-beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->user->givePermissionTo(AppPermissionEnum::MANAGE_SETTINGS->value);
-});
-
 describe('ClientResource Filament Management', function () {
+    beforeEach(function () {
+        $this->user = User::factory()->create();
+        $this->user->givePermissionTo(AppPermissionEnum::MANAGE_SETTINGS->value);
+    });
+
     it('can render client resource index page', function () {
         $this->actingAs($this->user);
 
