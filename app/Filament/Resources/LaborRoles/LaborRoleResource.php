@@ -76,17 +76,22 @@ class LaborRoleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->searchPlaceholder('Buscar rol por nombre...')
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
+                    ->label('NOMBRE DEL ROL')
                     ->searchable(),
                 TextColumn::make('base_salary')
+                    ->label('SALARIO BASE')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('social_load_pct')
+                    ->label('CARGA SOCIAL (%)')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('hourly_cost')
+                    ->label('COSTO HORA')
                     ->money()
                     ->sortable(),
                 CommonColumns::availability('is_active', 'DISPONIBILIDAD'),
@@ -106,11 +111,7 @@ class LaborRoleResource extends Resource
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->toolbarActions([]);
     }
 
     public static function getPages(): array

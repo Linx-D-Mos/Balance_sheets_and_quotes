@@ -69,22 +69,22 @@ class ClientResource extends Resource
         return $table
             ->searchPlaceholder('Buscar por nombre, correo o teléfono...')
             ->columns([
-                CommonColumns::displayName(),
-                CommonColumns::email(),
-                CommonColumns::phone(),
-                CommonColumns::countBadge('projects', 'Proyecto', 'Proyectos'),
+                CommonColumns::displayName()
+                ->label('NOMBRE'),
+                CommonColumns::email()
+                ->label('EMAIL'),
+                CommonColumns::phone()
+                ->label('TELÉFONO'),
+                CommonColumns::countBadge('projects', 'PROYECTO', 'PROYECTOS'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 CommonActions::editRowAction(),
-                CommonActions::secondaryRowAction('create_project', 'Crear Proyecto'),
+                CommonActions::secondaryRowAction('create_project', 'CREAR PROYECTO'),
             ])
             ->bulkActions([
-                \Filament\Actions\BulkActionGroup::make([
-                    \Filament\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

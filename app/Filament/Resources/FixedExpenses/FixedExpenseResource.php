@@ -57,18 +57,19 @@ class FixedExpenseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->searchPlaceholder('Buscar gasto fijo por concepto...')
             ->recordTitleAttribute('concept')
             ->columns([
                 TextColumn::make('concept')
-                    ->label('Concepto')
+                    ->label('CONCEPTO')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
                 TextColumn::make('amount')
-                    ->label('Monto mensual')
+                    ->label('MONTO MENSUAL')
                     ->money('USD')
                     ->sortable(),
-                CommonColumns::availability('is_active', 'Estado'),
+                CommonColumns::availability('is_active', 'ESTADO'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

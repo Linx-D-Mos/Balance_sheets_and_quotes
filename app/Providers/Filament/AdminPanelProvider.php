@@ -10,6 +10,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -29,7 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('BuildFin Pro')
+            ->brandName('Lynx construction')
             ->font('Inter')
             ->colors([
                 'primary' => Color::Indigo, // Tono violáceo de BuildFin Pro (#4F46E5)
@@ -40,20 +41,46 @@ class AdminPanelProvider extends PanelProvider
                 'info' => Color::Sky,
             ])
             ->sidebarCollapsibleOnDesktop() // Menú lateral plegable/desplegable
+            ->maxContentWidth(Width::Full)
             ->navigationGroups([
                 'OPERACIÓN',
                 'CATÁLOGOS',
                 'BACK-OFFICE',
             ])
-            // Componente Placeholder para el Selector de Proyecto / Workspace
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn(): string => Blade::render('
+                <style>
+                    /* Densidad compacta en celdas de tablas */
+                    .fi-ta-cell,
+                    .fi-ta-header-cell {
+                        padding-top: 0.55rem !important;
+                        padding-bottom: 0.55rem !important;
+                    }
+
+                    /* Ajuste de padding en inputs de búsqueda y formularios */
+                    .fi-input-wrp {
+                        padding-top: 0.15rem !important;
+                        padding-bottom: 0.15rem !important;
+                    }
+
+                    /* En dispositivos móviles (< 768px), escala compacta a 14px para que quepan todas las columnas y switches */
+                    @media (max-width: 768px) {
+                        html {
+                            font-size: 14px !important;
+                        }
+                    }
+                </style>
+                ')
+            )
             ->renderHook(
                 PanelsRenderHook::SIDEBAR_NAV_START,
-                fn (): string => Blade::render('
+                fn(): string => Blade::render('
                     <div class="px-3 py-2 my-2">
                         <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
-                            <span class="block text-[10px] font-bold tracking-wider text-slate-400 dark:text-slate-500 uppercase">WORKSPACE</span>
+                            <span class="block text-[10px] font-bold tracking-wider text-slate-400 dark:text-slate-500 uppercase"></span>
                             <div class="flex items-center justify-between mt-1">
-                                <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">Active Project</span>
+                                <span class="text-sm font-semibold text-slate-800 dark:text-slate-200"></span>
                                 <span class="h-2 w-2 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></span>
                             </div>
                         </div>
