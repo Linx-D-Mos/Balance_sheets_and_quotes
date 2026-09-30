@@ -50,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::HEAD_END,
                 fn(): string => Blade::render('
+                @vite([\'resources/css/app.css\', \'resources/js/app.js\'])
                 <style>
                     /* Densidad compacta en celdas de tablas */
                     .fi-ta-cell,
