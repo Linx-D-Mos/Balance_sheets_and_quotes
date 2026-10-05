@@ -2,6 +2,7 @@
 
 use App\Enums\AppPermissionEnum;
 use App\Filament\Pages\ManageGlobalSettings;
+use App\Models\FixedExpense;
 use App\Models\GlobalSetting;
 use App\Models\User;
 use Livewire\Livewire;
@@ -63,5 +64,35 @@ describe('Global Settings Filament Back-Office Page (P4 / HU-04)', function () {
 
         expect((float) $settings->default_profit_margin)->toBe(25.0000)
             ->and((float) $settings->overtime_multiplier)->toBe(1.7500);
+    });
+
+    it('can recalculate standard monthly capacity and overhead rate on demand', function () {
+        $this->actingAs($this->user);
+
+        // Forzamos un valor desactualizado en la capacidad
+        GlobalSetting::updateOrCreate(
+            ['id' => 1],
+            [
+                'standard_monthly_hours' => 150.0000,
+                'default_overhead_rate_applied' => 0.0000,
+            ]
+        );
+
+        FixedExpense::create([
+            'concept' => 'Seguro Operativo Anual',
+            'amount' => 1666.6667,
+            'is_active' => true,
+        ]);
+
+        Livewire::test(ManageGlobalSettings::class)
+            ->call('recalculateCapacity')
+            ->assertHasNoErrors()
+            ->assertNotified();
+
+        $settings = GlobalSetting::find(1);
+
+        // Certifica que recalculó la capacidad vía Yasumi (> 160 hrs) y actualizó T_oh
+        expect((float) $settings->standard_monthly_hours)->toBeGreaterThan(160.0000)
+            ->and((float) $settings->default_overhead_rate_applied)->toBeGreaterThan(0.0000);
     });
 });

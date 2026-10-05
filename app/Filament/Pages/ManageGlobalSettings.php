@@ -18,6 +18,8 @@ use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Collection;
 use UnitEnum;
 
+use function Illuminate\Support\hours;
+
 class ManageGlobalSettings extends Page implements HasForms
 {
     use InteractsWithForms;
@@ -108,13 +110,60 @@ class ManageGlobalSettings extends Page implements HasForms
     public function getStandardMonthlyHours(): float
     {
         $settings = GlobalSetting::find(1) ?? GlobalSetting::first();
-        if($settings && (float) $settings->standard_monthly_hours > 0){
+        if ($settings && (float) $settings->standard_monthly_hours > 0) {
             return (float) $settings->standard_monthly_hours;
         }
 
         return (new YasumiCalendarService())->getMonthlyStandardCapacityHours((int) date('Y'));
     }
 
+    public function getOverheadRate(): float
+    {
+        $settings = GlobalSetting::find(1) ?? GlobalSetting::first();
+        if ($settings && (float) $settings->default_overhead_rate_applied > 0) {
+            return (float) $settings->default_overhead_rate_applied;
+        }
+
+        $hours = $this->getStandardMonthlyHours();
+
+        return $hours > 0 ? round($this->getActiveOverheadSum() / $hours, 4) : 0.0000;
+    }
+
+    public function getCurrentMonthWorkingHours(): float
+    {
+        $start = now()->startOfMonth();
+        $end = now()->endOfMonth();
+
+        return (float) ((new YasumiCalendarService)->getWorkingDaysBetween($start, $end) * 8);
+    }
+
+    public function recalculateCapacity(YasumiCalendarService $yasumiCalendarService): void
+    {
+        $year = (int) now()->format('Y');
+
+        $monthlyCapacity = $yasumiCalendarService->getMonthlyStandardCapacityHours($year);
+
+        $settings = GlobalSetting::find(1) ?? GlobalSetting::first();
+
+        if (! $settings) {
+            return;
+        }
+
+        $activeOverhead = $this->getActiveOverheadSum();
+
+        $newRate = $monthlyCapacity > 0 ? round($activeOverhead / $monthlyCapacity, 4) : 00.0000;
+
+        $settings->update([
+            'standard_monthly_hours' => $monthlyCapacity,
+            'default_overhead_rate_applied' => $newRate,
+        ]);
+
+        Notification::make()
+            ->title("Capacidad y overhead recalculados para {$year}")
+            ->body("Nueva capacidad base: {$monthlyCapacity} hrs/mes. Tasa de overhead: \${$newRate}/hr.")
+            ->success()
+            ->send();
+    }
     public function getFixedExpenses(): Collection
     {
         return FixedExpense::orderBy('is_active', 'desc')->orderBy('concept')->get();
@@ -129,5 +178,4 @@ class ManageGlobalSettings extends Page implements HasForms
     {
         return Employee::latest()->take(6)->get();
     }
-
 }
