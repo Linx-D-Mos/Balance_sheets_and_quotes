@@ -14,10 +14,15 @@ class MaterialCategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (MaterialCategoryEnum::cases() as $category) {
+        foreach (MaterialCategoryEnum::cases() as $state) {
             MaterialCategory::updateOrCreate(
-                ['code' => $category->value],
-                ['display_name' => $category->label()]
+                ['code' => $state->value],
+                [
+                    'display_name' => $state->label(),
+                    'icon' => $state->icon(),
+                    'bg_color' => $state->bgColor(),
+                    'bg_text' => $state->bgText()
+                ]
             );
         }
     }

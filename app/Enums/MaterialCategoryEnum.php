@@ -19,4 +19,28 @@ enum MaterialCategoryEnum: string
     {
         return __("Enums/MaterialCategory" . $this->value);
     }
+
+    public function icon(): string
+    {
+        return match ($this) {
+            self::BUDGETED => 'fa-solid fa-file-invoice-dollar',
+            self::UNBUDGETED => 'fa-solid fa-file-invoice',
+        };
+    }
+
+    public function bgColor(): string
+    {
+        return match ($this) {
+            self::BUDGETED => 'bg-success',
+            self::UNBUDGETED => 'bg-warning',
+        };
+    }
+
+    public function bgText(): string
+    {
+        return match ($this) {
+            self::BUDGETED => 'text-success',
+            self::UNBUDGETED => 'text-warning',
+        };
+    }
 }

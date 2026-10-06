@@ -14,9 +14,16 @@ class QuoteStatusesSeeder extends Seeder
      */
     public function run(): void
     {
-        QuoteStatus::factory()->draft()->create();
-        QuoteStatus::factory()->approved()->create();
-        QuoteStatus::factory()->canceled()->create();
-        QuoteStatus::factory()->closedByAmendment()->create();
+        foreach (QuoteStatusEnum::cases() as $state) {
+            QuoteStatus::updateOrCreate(
+                ['code' => $state->value],
+                [
+                    'display_name' => $state->label(),
+                    'icon' => $state->icon(),
+                    'bg_color' => $state->bgColor(),
+                    'bg_text' => $state->bgText()
+                ]
+            );
+        }
     }
 }

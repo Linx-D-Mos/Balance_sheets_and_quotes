@@ -14,9 +14,16 @@ class ProjectStatusesSeeder extends Seeder
      */
     public function run(): void
     {
-        ProjectStatus::factory()->draft()->create();
-        ProjectStatus::factory()->inProgress()->create();
-        ProjectStatus::factory()->completed()->create();
-        ProjectStatus::factory()->cancelled()->create();
+        foreach (ProjectStatusEnum::cases() as $state) {
+            ProjectStatus::updateOrCreate(
+                ['code' => $state->value],
+                [
+                    'display_name' => $state->label(),
+                    'icon' => $state->icon(),
+                    'bg_color' => $state->bgColor(),
+                    'bg_text' => $state->bgText()
+                ]
+            );
+        }
     }
 }

@@ -25,7 +25,7 @@ class ProjectFactory extends Factory
     {
         return [
             'client_id' => Client::factory(),
-            'project_status_id' => fn () => ProjectStatus::where('code', ProjectStatusEnum::DRAFT)->first()?->id ?? ProjectStatus::factory(),
+            'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::DRAFT)->first()?->id ?? ProjectStatus::factory(),
             'code' => 'PRJ-' . $this->faker->unique()->numberBetween(1000, 9999),
             'title' => 'Proyecto ' . $this->faker->streetName(),
             'address' => $this->faker->address(),
@@ -37,7 +37,7 @@ class ProjectFactory extends Factory
     public function inProgress(): static
     {
         return $this->state(fn (array $attributes) => [
-            'project_status_id' => fn () => ProjectStatus::where('code', ProjectStatusEnum::IN_PROGRESS)->first()?->id,
+            'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::IN_PROGRESS)->first()?->id,
             'actual_start_date' => now()->subDays(5),
         ]);
     }
@@ -45,7 +45,7 @@ class ProjectFactory extends Factory
     public function completed(): static
     {
         return $this->state(fn (array $attributes) => [
-            'project_status_id' => fn () => ProjectStatus::where('code', ProjectStatusEnum::COMPLETED)->first()?->id,
+            'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::COMPLETED)->first()?->id,
             'actual_start_date' => now()->subDays(30),
             'actual_end_date' => now()->subDays(2),
         ]);
@@ -54,7 +54,7 @@ class ProjectFactory extends Factory
     public function cancelled(): static
     {
         return $this->state(fn (array $attributes) => [
-            'project_status_id' => fn () => ProjectStatus::where('code', ProjectStatusEnum::CANCELLED)->first()?->id,
+            'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::CANCELLED)->first()?->id,
         ]);
     }
 }

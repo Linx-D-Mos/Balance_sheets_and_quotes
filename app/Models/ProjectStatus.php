@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ProjectStatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,5 +28,11 @@ class ProjectStatus extends Model
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    //Scopes
+    public function scopeOfCode(Builder $query, ProjectStatusEnum $code)
+    {
+        return $query->where('code', $code);
     }
 }
