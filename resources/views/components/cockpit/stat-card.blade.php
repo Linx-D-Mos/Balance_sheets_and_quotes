@@ -24,7 +24,7 @@
                 wire:click="{{ $actionWireClick }}"
                 wire:loading.attr="disabled"
                 title="{{ $actionTitle ?? 'Recalcular' }}"
-                class="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition cursor-pointer"
+                class="w-4 h-4 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition cursor-pointer"
             >
                 <x-dynamic-component :component="$actionIcon" class="w-4 h-4" wire:loading.class="animate-spin" />
             </button>
