@@ -1,8 +1,10 @@
 <?php
 
+use App\Enums\ProjectStatusEnum;
+
 return [
-    'draft' => 'Borrador',
-    'in_progress' => 'En progreso',
-    'completed' => 'Completado',
-    'cancelled' => 'Cancelado'
+    ProjectStatusEnum::DRAFT->value => 'Borrador',
+    ProjectStatusEnum::IN_PROGRESS->value => 'En progreso',
+    ProjectStatusEnum::COMPLETED->value => 'Completado',
+    ProjectStatusEnum::CANCELED->value => 'Cancelado'
 ];

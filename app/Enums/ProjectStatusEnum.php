@@ -7,7 +7,7 @@ enum ProjectStatusEnum: string
     case DRAFT = 'draft';
     case IN_PROGRESS = 'in_progress';
     case COMPLETED = 'completed';
-    case CANCELLED = 'cancelled';
+    case CANCELED = 'canceled';
 
     /**
      * Get the plain text with each string in each case.
@@ -29,7 +29,7 @@ enum ProjectStatusEnum: string
             self::DRAFT => 'fa-solid fa-file',
             self::IN_PROGRESS => 'fa-solid fa-spinner',
             self::COMPLETED => 'fa-solid fa-check',
-            self::CANCELLED => 'fa-solid fa-ban',
+            self::CANCELED => 'fa-solid fa-ban',
         };
     }
 
@@ -39,7 +39,7 @@ enum ProjectStatusEnum: string
             self::DRAFT => 'bg-secondary',
             self::IN_PROGRESS => 'bg-primary',
             self::COMPLETED => 'bg-success',
-            self::CANCELLED => 'bg-danger',
+            self::CANCELED => 'bg-danger',
         };
     }
 
@@ -49,7 +49,7 @@ enum ProjectStatusEnum: string
             self::DRAFT => 'text-secondary',
             self::IN_PROGRESS => 'text-primary',
             self::COMPLETED => 'text-success',
-            self::CANCELLED => 'text-danger',
+            self::CANCELED => 'text-danger',
         };
     }
 }

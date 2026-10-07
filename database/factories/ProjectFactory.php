@@ -26,7 +26,7 @@ class ProjectFactory extends Factory
         return [
             'client_id' => Client::factory(),
             'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::DRAFT)->first()?->id ?? ProjectStatus::factory(),
-            'code' => 'PRJ-' . $this->faker->unique()->numberBetween(1000, 9999),
+            'code' => 'PRJ-' . $this->faker->unique()->numberBetween(1, 9999),
             'title' => 'Proyecto ' . $this->faker->streetName(),
             'address' => $this->faker->address(),
             'actual_start_date' => null,
@@ -51,10 +51,10 @@ class ProjectFactory extends Factory
         ]);
     }
 
-    public function cancelled(): static
+    public function canceled(): static
     {
         return $this->state(fn (array $attributes) => [
-            'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::CANCELLED)->first()?->id,
+            'project_status_id' => fn () => ProjectStatus::ofCode(ProjectStatusEnum::CANCELED)->first()?->id,
         ]);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ProjectStatusEnum;
 use App\Enums\QuoteStatusEnum;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -100,5 +102,59 @@ class Project extends Model
     public function deposits(): HasMany
     {
         return $this->hasMany(ProjectDeposit::class);
+    }
+
+    //Scopes
+
+    /**
+     * Scope a query to only include projects for a given client.
+     *
+     * @param Builder $query
+     * @param int $clientId
+     * @return Builder
+     */
+    public function scopeForClient(Builder $query, int $clientId): Builder
+    {
+        return $query->where('client_id', $clientId);
+    }
+
+    /**
+     * Scope a query to only include projects with a given status.
+     *
+     * @param Builder $query
+     * @param ProjectStatusEnum $status
+     * @return Builder
+     */
+    public function scopeOfStatus(Builder $query, ProjectStatusEnum $status): Builder
+    {
+        return $query->whereHas('status', function ($query) use ($status) {
+            $query->where('code', $status);
+        });
+    }
+
+    /**
+     * Scope a query to search projects by title.
+     *
+     * @param Builder $query
+     * @param string $term
+     * @return Builder
+     */
+    public function scopeSearchByTitle(Builder $query, string $term): Builder
+    {
+        return $query->where('title', 'like', "%{$term}%");
+    }
+
+    /**
+     * Scope a query to only include projects that started in a given month and year.
+     *
+     * @param Builder $query
+     * @param int $year
+     * @param int $month
+     * @return Builder
+     */
+    public function scopeStartedInMonth(Builder $query, int $year, int $month): Builder
+    {
+        return $query->whereYear('actual_start_date', $year)
+            ->whereMonth('actual_start_date', $month);
     }
 }

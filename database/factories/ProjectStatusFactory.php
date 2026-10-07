@@ -62,8 +62,8 @@ class ProjectStatusFactory extends Factory
     public function cancelled(): static
     {
         return $this->state(fn (array $attributes) => [
-            'display_name' => ProjectStatusEnum::CANCELLED->label(),
-            'code' => ProjectStatusEnum::CANCELLED,
+            'display_name' => ProjectStatusEnum::CANCELED->label(),
+            'code' => ProjectStatusEnum::CANCELED,
             'icon' => 'mdi-cancel',
             'bg_color' => '#ef4444',
             'bg_text' => '#ffffff',
