@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('title');
             $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
             $table->date('actual_start_date')->nullable();
             $table->date('actual_end_date')->nullable();
             $table->text('project_description')->nullable();
