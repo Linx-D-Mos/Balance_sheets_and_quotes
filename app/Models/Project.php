@@ -22,6 +22,8 @@ class Project extends Model
         'code',
         'title',
         'address',
+        'city',
+        'state',
         'actual_start_date',
         'actual_end_date',
         'project_description'
