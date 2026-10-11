@@ -21,7 +21,7 @@ enum QuoteStatusEnum : string
 
     public function label(): string
     {
-        return __("Enums/QuoteStatus" . $this->value);
+        return __("Enums/QuoteStatus.{$this->value}");
     }
 
     public function icon(): string

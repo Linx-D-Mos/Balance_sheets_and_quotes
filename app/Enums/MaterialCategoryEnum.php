@@ -17,7 +17,7 @@ enum MaterialCategoryEnum: string
 
     public function label(): string
     {
-        return __("Enums/MaterialCategory" . $this->value);
+        return __("Enums/MaterialCategory.{$this->value}");
     }
 
     public function icon(): string

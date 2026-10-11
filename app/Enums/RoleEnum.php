@@ -8,6 +8,6 @@ enum RoleEnum : string
 
     public function label(): string
     {
-        return __("Enums/Role". strtolower($this->value));
+        return __("Enums/Role.{$this->value}");
     }
 }

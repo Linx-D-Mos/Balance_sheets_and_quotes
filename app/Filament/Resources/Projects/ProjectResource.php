@@ -46,11 +46,6 @@ class ProjectResource extends Resource
                 ->searchable()
                 ->preload()
                 ->required(),
-            TextInput::make('code')
-                ->label('Código del proyecto')
-                ->required()
-                ->unique(Project::class, 'code', ignoreRecord: true)
-                ->maxLength(50),
             TextInput::make('title')
                 ->label('Nombre de obra')
                 ->required()
@@ -74,13 +69,10 @@ class ProjectResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('code')
-                ->label('Código del proyecto')
-                ->sortable()
-                ->searchable(),
             TextColumn::make('title')
-                ->label('Obra')
+                ->label('Proyecto')
                 ->weight('bold')
+                ->description(fn (Project $record): string => $record->code)
                 ->sortable()
                 ->searchable(),
             TextColumn::make('client')
@@ -101,23 +93,27 @@ class ProjectResource extends Resource
             TextColumn::make('status.display_name')
                 ->label('Estado')
                 ->badge()
-                ->color(fn(Project $record) => match ($record->status?->code) {
+                ->color(fn(Project $record):string => match ($record->status?->code) {
                     ProjectStatusEnum::IN_PROGRESS => ProjectStatusEnum::IN_PROGRESS->bgColor(),
                     ProjectStatusEnum::COMPLETED => ProjectStatusEnum::COMPLETED->bgColor(),
                     ProjectStatusEnum::CANCELED => ProjectStatusEnum::CANCELED->bgColor(),
                     default => ProjectStatusEnum::DRAFT->bgColor(),
                 }),
-        ])->recordActions([
-            Action::make('createQuote')
-                ->label('Formular cotización')
-                ->icon('heroicon-o-document-plus')
-                ->color('primary')
-                ->visible(fn(Project $record): bool => ! in_array($record->status?->code, [
-                    ProjectStatusEnum::COMPLETED,
-                    ProjectStatusEnum::CANCELED,
-                ], true)),
-            EditAction::make(),
-        ]);
+        ])
+            ->filters([
+                //
+            ])
+            ->recordActions([
+                Action::make('createQuote')
+                    ->label('Formular cotización')
+                    ->icon('heroicon-o-document-plus')
+                    ->color('primary')
+                    ->visible(fn(Project $record): bool => ! in_array($record->status?->code, [
+                        ProjectStatusEnum::COMPLETED,
+                        ProjectStatusEnum::CANCELED,
+                    ], true)),
+                EditAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

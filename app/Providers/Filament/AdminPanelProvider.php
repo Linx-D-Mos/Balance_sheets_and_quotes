@@ -33,7 +33,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Lynx construction')
             ->font('Inter')
             ->colors([
-                'primary' => Color::Indigo, // Tono violáceo de BuildFin Pro (#4F46E5)
+                'primary' =>  Color::hex('#FF8A00'),
+                'secondary' => Color::hex('#06034F'),
                 'gray' => Color::Slate,
                 'danger' => Color::Rose,
                 'warning' => Color::Amber,

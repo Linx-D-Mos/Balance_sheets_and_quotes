@@ -20,7 +20,7 @@ enum ProjectStatusEnum: string
 
     public function label(): string
     {
-        return __("Enums/ProjectStatus" . $this->value);
+        return __("Enums/ProjectStatus.{$this->value}");
     }
 
     public function icon(): string
@@ -36,20 +36,20 @@ enum ProjectStatusEnum: string
     public function bgColor(): string
     {
         return match ($this) {
-            self::DRAFT => 'bg-secondary',
-            self::IN_PROGRESS => 'bg-primary',
-            self::COMPLETED => 'bg-success',
-            self::CANCELED => 'bg-danger',
+            self::DRAFT => 'gray',
+            self::IN_PROGRESS => 'info',
+            self::COMPLETED => 'success',
+            self::CANCELED => 'danger',
         };
     }
 
     public function bgText(): string
     {
         return match ($this) {
-            self::DRAFT => 'text-secondary',
-            self::IN_PROGRESS => 'text-primary',
-            self::COMPLETED => 'text-success',
-            self::CANCELED => 'text-danger',
+            self::DRAFT => 'secondary',
+            self::IN_PROGRESS => 'primary',
+            self::COMPLETED => 'success',
+            self::CANCELED => 'danger',
         };
     }
 }

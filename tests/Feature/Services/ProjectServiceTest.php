@@ -13,7 +13,7 @@ describe('ProjectService: Creación de Proyectos', function () {
     it('crea un proyecto con código autogenerado secuencial y estado borrador', function () {
         $client = Client::factory()->create();
 
-        $project = $this->projectService->createProject([
+        $project = $this->projectService->save([
             'client_id' => $client->id,
             'title' => 'Construcción Bodega Logística',
             'address' => 'Zona Portuaria Km 5',
@@ -35,12 +35,12 @@ describe('ProjectService: Creación de Proyectos', function () {
         $client = Client::factory()->create();
         $year = now()->year;
 
-        $project1 = $this->projectService->createProject([
+        $project1 = $this->projectService->save([
             'client_id' => $client->id,
             'title' => 'Obra Alfa',
         ]);
 
-        $project2 = $this->projectService->createProject([
+        $project2 = $this->projectService->save([
             'client_id' => $client->id,
             'title' => 'Obra Beta',
         ]);

@@ -20,7 +20,7 @@ enum PaymentMethodEnum: string
 
     public function label(): string
     {
-        return __("Enums/PaymentMethod" . $this->value);
+        return __("Enums/PaymentMethod.{$this->value}");
     }
 
     public function icon(): string

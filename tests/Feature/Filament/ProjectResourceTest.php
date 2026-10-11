@@ -1,8 +1,8 @@
 <?php
 
 use App\Enums\ProjectStatusEnum;
-use App\Filament\Resources\ProjectResource\Pages\CreateProject;
-use App\Filament\Resources\ProjectResource\Pages\ListProjects;
+use App\Filament\Resources\Projects\Pages\CreateProject;
+use App\Filament\Resources\Projects\Pages\ListProjects;
 use App\Models\Client;
 use App\Models\Project;
 use App\Models\User;
@@ -73,23 +73,29 @@ describe('Acción Contextual de Creación de Cotización', function () {
 });
 
 describe('Creación de Proyectos (Formulario Base)', function () {
-    it('persiste un nuevo proyecto con cliente y código válidos', function () {
+    it('persiste un nuevo proyecto delegando la generación del código y estado al servicio', function () {
         $client = Client::factory()->create();
 
         Livewire::test(CreateProject::class)
             ->fillForm([
                 'client_id' => $client->id,
                 'title' => 'Remodelación Torre Central',
-                'code' => 'PRJ-2090',
+                'city' => 'Cali',
+                'state' => 'Valle del Cauca',
+                'address' => 'Av. 6N # 20-30',
             ])
             ->call('create')
             ->assertHasNoFormErrors();
 
-        $this->assertDatabaseHas('projects', [
-            'client_id' => $client->id,
-            'title' => 'Remodelación Torre Central',
-            'code' => 'PRJ-2090',
-        ]);
+        $project = Project::where('title', 'Remodelación Torre Central')->first();
+
+        expect($project)->not->toBeNull()
+            ->and($project->code)->toMatch('/^PRJ-\d{4}-\d{4}$/')
+            ->and($project->status->code)->toBe(ProjectStatusEnum::DRAFT)
+            ->and($project->actual_start_date)->toBeNull()
+            ->and($project->actual_end_date)->toBeNull()
+            ->and($project->city)->toBe('Cali')
+            ->and($project->state)->toBe('Valle del Cauca');
     });
 
     it('rechaza el formulario si el cliente o el título no se suministran', function () {
