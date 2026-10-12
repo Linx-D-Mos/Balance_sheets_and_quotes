@@ -2,6 +2,7 @@
 
 use App\Enums\ProjectStatusEnum;
 use App\Filament\Resources\Projects\Pages\CreateProject;
+use App\Filament\Resources\Projects\Pages\EditProject;
 use App\Filament\Resources\Projects\Pages\ListProjects;
 use App\Models\Client;
 use App\Models\Project;
@@ -111,3 +112,45 @@ describe('Creación de Proyectos (Formulario Base)', function () {
             ]);
     });
 });
+
+describe('Edición y Modificación de Proyectos (EditProject)', function () {
+    it('renderiza la página de edición con los datos del proyecto', function () {
+        $project = Project::factory()->create();
+
+        Livewire::test(EditProject::class, ['record' => $project->getRouteKey()])
+            ->assertSuccessful()
+            ->assertFormSet([
+                'title' => $project->title,
+                'code' => $project->code,
+                'client_id' => $project->client_id,
+            ]);
+    });
+
+    it('actualiza los datos descriptivos del proyecto delegando al servicio', function () {
+        $project = Project::factory()->create([
+            'title' => 'Nombre Original',
+            'city' => 'Medellín',
+        ]);
+
+        Livewire::test(EditProject::class, ['record' => $project->getRouteKey()])
+            ->fillForm([
+                'title' => 'Nombre Actualizado',
+                'city' => 'Envigado',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $project->refresh();
+
+        expect($project->title)->toBe('Nombre Actualizado')
+            ->and($project->city)->toBe('Envigado');
+    });
+
+    it('no incluye la acción de borrado en el encabezado de edición', function () {
+        $project = Project::factory()->create();
+
+        Livewire::test(EditProject::class, ['record' => $project->getRouteKey()])
+            ->assertActionDoesNotExist('delete');
+    });
+});
+

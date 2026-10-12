@@ -80,4 +80,66 @@ class CommonColumns
             ->onColor('primary')
             ->offColor('gray');
     }
+
+    /**
+     * Columna de título de registro principal con código o identificador secundario en negrita.
+     */
+    public static function recordTitleWithCode(
+        string $titleField = 'title',
+        string $codeField = 'code',
+        string $label = 'PROYECTO'
+    ): TextColumn {
+        return TextColumn::make($titleField)
+            ->label($label)
+            ->weight('bold')
+            ->description(fn ($record): ?string => $record?->{$codeField})
+            ->sortable()
+            ->searchable();
+    }
+
+    /**
+     * Columna estandarizada para clientes vinculados con formato corporativo y búsqueda insensible a mayúsculas.
+     */
+    public static function client(
+        string $relationship = 'client',
+        string $label = 'CLIENTE'
+    ): TextColumn {
+        return TextColumn::make($relationship)
+            ->label($label)
+            ->formatStateUsing(fn ($record): string => $record->{$relationship}?->company_name ?: trim("{$record->{$relationship}?->first_name} {$record->{$relationship}?->last_name}"))
+            ->searchable(query: function ($query, string $search) use ($relationship) {
+                return $query->whereHas($relationship, function ($q) use ($search) {
+                    $q->where('company_name', 'ilike', "%{$search}%")
+                        ->orWhere('first_name', 'ilike', "%{$search}%")
+                        ->orWhere('last_name', 'ilike', "%{$search}%");
+                });
+            });
+    }
+
+    /**
+     * Insignia de estado estandarizada que consume contratos nativos de Filament (HasLabel, HasColor, HasIcon).
+     */
+    public static function statusBadge(
+        string $name = 'status.code',
+        string $label = 'ESTADO'
+    ): TextColumn {
+        return TextColumn::make($name)
+            ->label($label)
+            ->badge();
+    }
+
+    /**
+     * Insignia estandarizada para línea base activa o relación de cotización aprobada.
+     */
+    public static function activeBaseline(
+        string $name = 'approvedQuote.title',
+        string $label = 'LÍNEA BASE ACTIVA',
+        string $placeholder = 'Sin cotización aprobada'
+    ): TextColumn {
+        return TextColumn::make($name)
+            ->label($label)
+            ->placeholder($placeholder)
+            ->badge()
+            ->color(fn ($state): string => $state ? 'success' : 'gray');
+    }
 }
