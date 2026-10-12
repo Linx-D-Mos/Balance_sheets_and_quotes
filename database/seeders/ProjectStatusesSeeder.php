@@ -18,9 +18,9 @@ class ProjectStatusesSeeder extends Seeder
             ProjectStatus::updateOrCreate(
                 ['code' => $state->value],
                 [
-                    'display_name' => $state->label(),
-                    'icon' => $state->icon(),
-                    'bg_color' => $state->bgColor(),
+                    'display_name' => $state->getLabel(),
+                    'icon' => $state->getIcon(),
+                    'bg_color' => $state->getColor(),
                     'bg_text' => $state->bgText()
                 ]
             );

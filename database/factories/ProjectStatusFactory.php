@@ -30,43 +30,43 @@ class ProjectStatusFactory extends Factory
     public function draft(): static
     {
         return $this->state(fn (array $attributes) => [
-            'display_name' => ProjectStatusEnum::DRAFT->label(),
+            'display_name' => ProjectStatusEnum::DRAFT->getLabel(),
             'code' => ProjectStatusEnum::DRAFT,
-            'icon' => 'mdi-circle-outline',
-            'bg_color' => '#6b7280',
-            'bg_text' => '#ffffff',
+            'icon' => ProjectStatusEnum::DRAFT->getIcon(),
+            'bg_color' => ProjectStatusEnum::DRAFT->getColor(),
+            'bg_text' => ProjectStatusEnum::DRAFT->bgText(),
         ]);
     }
     public function inProgress(): static
     {
         return $this->state(fn (array $attributes) => [
-            'display_name' => ProjectStatusEnum::IN_PROGRESS->label(),
+            'display_name' => ProjectStatusEnum::IN_PROGRESS->getLabel(),
             'code' => ProjectStatusEnum::IN_PROGRESS,
-            'icon' => 'mdi-progress-clock',
-            'bg_color' => '#3b82f6',
-            'bg_text' => '#ffffff',
+            'icon' => ProjectStatusEnum::IN_PROGRESS->getIcon(),
+            'bg_color' => ProjectStatusEnum::IN_PROGRESS->getColor(),
+            'bg_text' => ProjectStatusEnum::IN_PROGRESS->bgText(),
         ]);
     }
 
     public function completed(): static
     {
         return $this->state(fn (array $attributes) => [
-            'display_name' => ProjectStatusEnum::COMPLETED->label(),
+            'display_name' => ProjectStatusEnum::COMPLETED->getLabel(),
             'code' => ProjectStatusEnum::COMPLETED,
-            'icon' => 'mdi-check-circle-outline',
-            'bg_color' => '#22c55e',
-            'bg_text' => '#ffffff',
+            'icon' => ProjectStatusEnum::COMPLETED->getIcon(),
+            'bg_color' => ProjectStatusEnum::COMPLETED->getColor(),
+            'bg_text' => ProjectStatusEnum::COMPLETED->bgText(),
         ]);
     }
 
-    public function cancelled(): static
+    public function canceled(): static
     {
         return $this->state(fn (array $attributes) => [
-            'display_name' => ProjectStatusEnum::CANCELED->label(),
+            'display_name' => ProjectStatusEnum::CANCELED->getLabel(),
             'code' => ProjectStatusEnum::CANCELED,
-            'icon' => 'mdi-cancel',
-            'bg_color' => '#ef4444',
-            'bg_text' => '#ffffff',
+            'icon' => ProjectStatusEnum::CANCELED->getIcon(),
+            'bg_color' => ProjectStatusEnum::CANCELED->getColor(),
+            'bg_text' => ProjectStatusEnum::CANCELED->bgText(),
         ]);
     }
 

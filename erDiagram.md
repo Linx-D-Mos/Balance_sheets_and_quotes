@@ -18,7 +18,7 @@ erDiagram
     project_statuses {
         bigint id PK
         string display_name "Borrador, En Ejecución, Finalizado, Cancelado"
-        string code UK "unique (draft, in_progress, completed, cancelled)"
+        string code UK "unique (draft, in_progress, completed, canceled)"
         string icon
         string bg_color
         string bg_text
@@ -44,7 +44,7 @@ erDiagram
     quote_statuses {
         bigint id PK
         string display_name "Borrador, Aprobada, Cerrada por Enmienda, Cancelada"
-        string code UK "unique (draft, approved, closed_by_amendment, cancelled)"
+        string code UK "unique (draft, approved, closed_by_amendment, canceled)"
         string icon
         string bg_color
         string bg_text

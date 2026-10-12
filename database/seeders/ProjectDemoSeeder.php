@@ -49,7 +49,7 @@ class ProjectDemoSeeder extends Seeder
         $draftStatus = ProjectStatus::ofCode(ProjectStatusEnum::DRAFT)->firstOrFail();
         $inProgressStatus = ProjectStatus::ofCode(ProjectStatusEnum::IN_PROGRESS)->firstOrFail();
         $completedStatus = ProjectStatus::ofCode(ProjectStatusEnum::COMPLETED)->firstOrFail();
-        $cancelledStatus = ProjectStatus::ofCode(ProjectStatusEnum::CANCELED)->firstOrFail();
+        $canceledStatus = ProjectStatus::ofCode(ProjectStatusEnum::CANCELED)->firstOrFail();
 
         // 3. Proyecto 1: Borrador (Sin cotización aprobada, acción createQuote activa)
         Project::firstOrCreate(
@@ -127,7 +127,7 @@ class ProjectDemoSeeder extends Seeder
             ['code' => 'PRJ-2026-0004'],
             [
                 'client_id' => $clientPerson->id,
-                'project_status_id' => $cancelledStatus->id,
+                'project_status_id' => $canceledStatus->id,
                 'title' => 'Construcción Kiosco y Zona BBQ',
                 'city' => 'Cali',
                 'state' => 'Valle del Cauca',

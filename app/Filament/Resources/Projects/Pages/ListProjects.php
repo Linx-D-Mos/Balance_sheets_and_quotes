@@ -28,7 +28,7 @@ class ListProjects extends ListRecords
             'draft' => Tab::make('Borrador')
                 ->modifyQueryUsing(fn(Builder $query) => $query->ofStatus(ProjectStatusEnum::DRAFT))
                 ->badge(fn() => Project::ofStatus(ProjectStatusEnum::DRAFT)->count())
-                ->badgeColor(ProjectStatusEnum::DRAFT->bgColor()),
+                ->badgeColor(ProjectStatusEnum::DRAFT->getColor()),
             'in_progress' => Tab::make('En progreso')
                 ->modifyQueryUsing(fn(Builder $query) => $query->ofStatus(ProjectStatusEnum::IN_PROGRESS))
                 ->badge(fn() => Project::ofStatus(ProjectStatusEnum::IN_PROGRESS)->count())
@@ -37,7 +37,7 @@ class ListProjects extends ListRecords
                 ->modifyQueryUsing(fn(Builder $query) => $query->ofStatus(ProjectStatusEnum::COMPLETED))
                 ->badge(fn() => Project::ofStatus(ProjectStatusEnum::COMPLETED)->count())
                 ->badgeColor(ProjectStatusEnum::COMPLETED->bgColor()),
-            'cancelled' => Tab::make('Cancelados')
+            'canceled' => Tab::make('Cancelados')
                 ->modifyQueryUsing(fn(Builder $query) => $query->ofStatus(ProjectStatusEnum::CANCELED))
                 ->badge(fn() => Project::ofStatus(ProjectStatusEnum::CANCELED)->count())
                 ->badgeColor(ProjectStatusEnum::CANCELED->bgColor()),

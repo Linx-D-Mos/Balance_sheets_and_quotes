@@ -46,7 +46,7 @@ class QuoteFactory extends Factory
         ]);
     }
 
-    public function cancelled(): static
+    public function canceled(): static
     {
         return $this->state(fn (array $attributes) => [
             'quote_status_id' => fn () => QuoteStatus::where('code', QuoteStatusEnum::CANCELED)->first()?->id,

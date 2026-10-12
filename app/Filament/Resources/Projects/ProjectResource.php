@@ -20,6 +20,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
@@ -72,7 +73,7 @@ class ProjectResource extends Resource
             TextColumn::make('title')
                 ->label('Proyecto')
                 ->weight('bold')
-                ->description(fn (Project $record): string => $record->code)
+                ->description(fn(Project $record): string => $record->code)
                 ->sortable()
                 ->searchable(),
             TextColumn::make('client')
@@ -93,7 +94,7 @@ class ProjectResource extends Resource
             TextColumn::make('status.display_name')
                 ->label('Estado')
                 ->badge()
-                ->color(fn(Project $record):string => match ($record->status?->code) {
+                ->color(fn(Project $record): string => match ($record->status?->code) {
                     ProjectStatusEnum::IN_PROGRESS => ProjectStatusEnum::IN_PROGRESS->bgColor(),
                     ProjectStatusEnum::COMPLETED => ProjectStatusEnum::COMPLETED->bgColor(),
                     ProjectStatusEnum::CANCELED => ProjectStatusEnum::CANCELED->bgColor(),
@@ -101,7 +102,12 @@ class ProjectResource extends Resource
                 }),
         ])
             ->filters([
-                //
+                SelectFilter::make('client_id')
+                    ->label('Cliente')
+                    ->relationship('client', 'id')
+                    ->getOptionLabelFromRecordUsing(fn($record) => $record->company_name ?: "{$record->first_name} {$record->last_name}")
+                    ->searchable()
+                    ->preload(),
             ])
             ->recordActions([
                 Action::make('createQuote')

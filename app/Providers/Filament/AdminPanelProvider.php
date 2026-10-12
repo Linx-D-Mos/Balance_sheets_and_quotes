@@ -72,6 +72,72 @@ class AdminPanelProvider extends PanelProvider
                             font-size: 14px !important;
                         }
                     }
+
+                    /* 1. Anula la separación entre las tabs y la tabla, y alinea a la izquierda */
+.fi-page:has(.fi-ta-ctn) .fi-tabs {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    background-color: white !important;
+    border: 1px solid rgb(229 231 235) !important;
+    border-bottom: 1px solid rgb(229 231 235) !important;
+    border-top-left-radius: 0.75rem !important;
+    border-top-right-radius: 0.75rem !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+    margin-bottom: -1.5rem !important; /* Absorbe el gap vertical de Filament */
+    padding: 0 1rem !important;
+    gap: 1.5rem !important;
+}
+
+.dark .fi-page:has(.fi-ta-ctn) .fi-tabs {
+    background-color: rgb(17 24 39) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 2. Estilo de Pestaña Plana (Underline Tab) */
+.fi-page:has(.fi-ta-ctn) .fi-tabs-item {
+    position: relative !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0.85rem 0.5rem !important;
+    font-weight: 500 !important;
+    color: rgb(107 114 128) !important;
+    box-shadow: none !important;
+}
+
+.fi-page:has(.fi-ta-ctn) .fi-tabs-item:hover {
+    color: rgb(17 24 39) !important;
+}
+
+.dark .fi-page:has(.fi-ta-ctn) .fi-tabs-item {
+    color: rgb(156 163 175) !important;
+}
+
+/* 3. Indicador de Pestaña Activa con el Naranja Corporativo */
+.fi-page:has(.fi-ta-ctn) .fi-tabs-item[aria-selected="true"] {
+    color: #FF8A00 !important;
+    font-weight: 600 !important;
+}
+
+.fi-page:has(.fi-ta-ctn) .fi-tabs-item[aria-selected="true"]::after {
+    content: \'\' !important;
+    position: absolute !important;
+    bottom: -1px !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 2px !important;
+    background-color: #FF8A00 !important;
+}
+
+/* 4. Fusionar la tabla eliminando sus esquinas y borde superior */
+.fi-page:has(.fi-tabs) .fi-ta-ctn {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    border-top: none !important;
+}
                 </style>
                 ')
             )

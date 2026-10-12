@@ -38,6 +38,28 @@ class ProjectService
     }
 
     /**
+     * Actualiza la ficha operativa del proyecto protegiendo la inmutabilidad
+     * cliente, código, estado y fechas operativas de faena.
+     *
+     * @param Project $project
+     * @param array $data
+     * @return Project
+     */
+    public function update(Project $project, array $data): Project
+    {
+        return DB::transaction(function () use ($project, $data) {
+            $project->update([
+                'title' => $data['title'] ?? $project->title,
+                'address' => $data['address'] ?? $project->address,
+                'city' => $data['city'] ?? $project->city,
+                'state' => $data['state'] ?? $project->state,
+                'project_description' => $data['project_description'] ?? $project->project_description,
+            ]);
+
+            return $project->refresh();
+        });
+    }
+    /**
      * Generate the next project code with format PRJ-YYYY-XXXX protected against race conditions.
      */
     protected function generateNextProjectCode(): string
@@ -45,18 +67,13 @@ class ProjectService
         $year = now()->year;
         $prefix = "PRJ-{$year}-";
 
-        //Pesimist lock to avoid race conditions when generating the next project code
-        $lastProject = Project::where('code', 'like', "{$prefix}%")
+        $maxSequence = Project::where('code', 'LIKE', "{$prefix}%")
             ->lockForUpdate()
-            ->orderByDesc('code')
-            ->first();
+            ->selectRaw("COALESCE(MAX(CAST(SUBSTRING(code FROM '[0-9]+$') AS INTEGER)), 0) as max_seq")
+            ->value('max_seq');
 
-        if (! $lastProject) {
-            return $prefix . '0001';
-        } else {
-            $parts = explode('-', $lastProject->code);
-            $sequence = isset($parts[2]) ? ((int) $parts[2]) + 1 : 1;
-        }
-        return sprintf('%s%04d', $prefix, $sequence);
+        $nextSeq = ((int) $maxSequence) + 1;
+
+        return sprintf('%s%04d', $prefix, $nextSeq);
     }
 }

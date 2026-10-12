@@ -2,7 +2,11 @@
 
 namespace App\Enums;
 
-enum ProjectStatusEnum: string
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasIcon;
+use Filament\Support\Contracts\HasLabel;
+
+enum ProjectStatusEnum: string implements HasLabel, HasIcon, HasColor
 {
     case DRAFT = 'draft';
     case IN_PROGRESS = 'in_progress';
@@ -18,22 +22,22 @@ enum ProjectStatusEnum: string
         return array_column(self::cases(), 'value');
     }
 
-    public function label(): string
+    public function getLabel(): string
     {
         return __("Enums/ProjectStatus.{$this->value}");
     }
 
-    public function icon(): string
+    public function getIcon(): string
     {
         return match ($this) {
-            self::DRAFT => 'fa-solid fa-file',
-            self::IN_PROGRESS => 'fa-solid fa-spinner',
-            self::COMPLETED => 'fa-solid fa-check',
-            self::CANCELED => 'fa-solid fa-ban',
+            self::DRAFT => 'heroicon-m-document-text',
+            self::IN_PROGRESS => 'heroicon-m-arrow-path',
+            self::COMPLETED => 'heroicon-m-check-badge',
+            self::CANCELED => 'heroicon-m-x-circle',
         };
     }
 
-    public function bgColor(): string
+    public function getColor(): string
     {
         return match ($this) {
             self::DRAFT => 'gray',
