@@ -67,8 +67,12 @@ class ProjectService
         $year = now()->year;
         $prefix = "PRJ-{$year}-";
 
+        // Advisory Lock transaccional en PostgreSQL: serializa la generación por año fiscal
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('SELECT pg_advisory_xact_lock(?)', [crc32("projects_code_{$year}")]);
+        }
+
         $maxSequence = Project::where('code', 'LIKE', "{$prefix}%")
-            ->lockForUpdate()
             ->selectRaw("COALESCE(MAX(CAST(SUBSTRING(code FROM '[0-9]+$') AS INTEGER)), 0) as max_seq")
             ->value('max_seq');
 
