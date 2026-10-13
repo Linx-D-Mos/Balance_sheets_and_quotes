@@ -5,6 +5,7 @@ namespace App\Filament\Support\Columns;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class CommonColumns
@@ -17,18 +18,36 @@ class CommonColumns
         string $label = 'CLIENTE / RAZÓN SOCIAL',
         ?array $searchableColumns = null
     ): TextColumn {
-        $column = TextColumn::make($name)
+        return TextColumn::make($name)
             ->label($label)
-            ->sortable()
-            ->weight('bold');
+            ->weight('bold')
+            ->state(function ($record) use ($name): string {
+                if ($name === 'company_name') {
+                    return filled($record->company_name)
+                        ? (string) $record->company_name
+                        : trim("{$record->first_name} {$record->last_name}");
+                }
+                return (string) $record->{$name};
+            })->searchable(query: function (Builder $query, string $search) use ($name): Builder {
+                if ($name === 'company_name') {
+                    return $query->where(function (Builder $q) use ($search) {
+                        $q->where('company_name', 'ilike', "%{$search}%")
+                            ->orWhere('first_name', 'ilike', "%{$search}%")
+                            ->orWhere('last_name', 'ilike', "%{$search}%");
+                    });
+                }
 
-        if ($name === 'company_name') {
-            $column->formatStateUsing(fn($state, $record): string => $state ?: trim("{$record->first_name} {$record->last_name}"));
-        }
+                return $query->where($name, 'ilike', "%{$search}%");
+            })
+            ->sortable(query: function (Builder $query, string $direction) use ($name): Builder {
+                if ($name === 'company_name') {
+                    return $query->orderByRaw(
+                        "COALESCE(NULLIF(company_name, ''), CONCAT(first_name, ' ', last_name)) {$direction}"
+                    );
+                }
 
-        $columnsToSearch = $searchableColumns ?? ($name === 'company_name' ? ['company_name', 'first_name', 'last_name', 'email'] : [$name]);
-
-        return $column->searchable($columnsToSearch);
+                return $query->orderBy($name, $direction);
+            });
     }
 
     /**
@@ -92,7 +111,7 @@ class CommonColumns
         return TextColumn::make($titleField)
             ->label($label)
             ->weight('bold')
-            ->description(fn ($record): ?string => $record?->{$codeField})
+            ->description(fn($record): ?string => $record?->{$codeField})
             ->sortable()
             ->searchable();
     }
@@ -106,7 +125,7 @@ class CommonColumns
     ): TextColumn {
         return TextColumn::make($relationship)
             ->label($label)
-            ->formatStateUsing(fn ($record): string => $record->{$relationship}?->company_name ?: trim("{$record->{$relationship}?->first_name} {$record->{$relationship}?->last_name}"))
+            ->formatStateUsing(fn($record): string => $record->{$relationship}?->company_name ?: trim("{$record->{$relationship}?->first_name} {$record->{$relationship}?->last_name}"))
             ->searchable(query: function ($query, string $search) use ($relationship) {
                 return $query->whereHas($relationship, function ($q) use ($search) {
                     $q->where('company_name', 'ilike', "%{$search}%")
@@ -140,6 +159,6 @@ class CommonColumns
             ->label($label)
             ->placeholder($placeholder)
             ->badge()
-            ->color(fn ($state): string => $state ? 'success' : 'gray');
+            ->color(fn($state): string => $state ? 'success' : 'gray');
     }
 }
